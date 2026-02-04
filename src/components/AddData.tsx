@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import type { Course, Diff } from "../data/types";
 import { useStore } from "../data/store"
+import { getColor } from "../data/defaults";
 
 
 
@@ -29,22 +30,29 @@ const AddData = () => {
 						onChange={e => setData({ ...data, courses: newList(dc, c.id, { name: e.target.value }) })}
 						value={c.name}
 						/>
-					<div className="row">
-					<label> Veckor </label>
-					<input type="number"
-						onChange={e => setData({ ...data, courses: newList(dc, c.id, { weeks: Number(e.target.value) }) })}
-						value={c.weeks}
-						/>
-					</div>
+
+					{/* <div className="row"> */}
+						<label> Veckor </label>
+						<input type="number"
+							onChange={e => setData({ ...data, courses: newList(dc, c.id, { weeks: Number(e.target.value) }) })}
+							value={c.weeks}
+							/>
+
+						<label> Kategori (siffra) </label>
+						<input type="text" className="short"
+							onChange={e => setData({ ...data, courses: newList(dc, c.id, { color: getColor(e.target.value) }) })}
+							value={c.color}
+							/>
+					{/* </div> */}
+
 					<button onClick={() => setData({ ...data, courses: data.courses.filter(c2 => c2.id !== c.id)})}> Ta bort </button>
 				</div>
 			))}
 			<button
 				onClick={() => setData({ ...data, courses: [ ...data.courses, newCourse(data.courses) ] })}
 			> Lägg till kurs </button>
-			{/* dynamiskt: kursnamn, antal veckor */}
 
-			<button> Generera diagram </button>
+			{/* <button> Generera diagram </button> */}
 		</div>
 	)
 }
@@ -54,7 +62,8 @@ function newCourse(courses: Course[]): Course {
 		id: courses.reduce((acc, cur) => Math.max(acc, cur.id), 0) + 1,
 		name: '',
 		shortName: '',
-		weeks: 2
+		weeks: 2,
+		color: getColor(0)
 	}
 }
 

@@ -43,7 +43,16 @@
 		}
 	}
 
-	[type="number"] {
+	[type="number"], .short {
 		width: 5em;
 	}
+}
+
+.diagram {
+	h1 {
+		margin: 0;
+		font-size: 150%;
+	}
+	p { margin: 0; }
+	canvas { margin: 1em 0; }
 }
