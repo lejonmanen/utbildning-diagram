@@ -1,25 +1,73 @@
 :root {
 	--border: 1px solid gray;
+	--button-border: 1px solid #51A2FF;
 	--br: 0.4em;
-	--selection-bg: rgb(214, 231, 246);
+	--app-bg: #EBF5FF;
+	--app-bg-opa: rgba(226, 237, 248, 0.8);
+	--selection-bg: #8EC5FF;
+	--button-bg: #8EC5FF;
+	--button-hover: #51A2FF;
 }
 
+body {
+	background-color: var(--app-bg);
+}
+button {
+	transition: all 0.5s;
+	background-color: var(--button-bg);
+	border: var(--button-border);
+	border-radius: 0.5em;
+	padding: 0.15em 1em;
+
+	&.large {
+		padding: 0.4em 2em;
+		/* margin: 0.2em 0; */
+	}
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--button-hover);
+	}
+}
+.margin-bot-md {
+	margin-bottom: 0.5em;
+}
 .row {
 	display: flex;
 	flex-direction: row;
 	/* justify-content: space-between; */
-	gap: 1em;
+	gap: 0.3em 0.7em;
+	flex-wrap: wrap;
+}
+.column {
+	display: flex;
+	flex-direction: column;
+	gap: 0em;
 }
 
+.tabs { position: relative; }
 .headings {
+	background-color: var(--app-bg-opa);
+	position: sticky;
+	top: 0;
 	display: flex;
 	flex-direction: row;
 	gap: 1em;
 
+	p + p { margin-left: 0.4em; }
 	p {
+		margin: 0.2em 0;
+		background-color: var(--app-bg);
+		box-shadow: 0 0 0 0 var(--selection-bg);
+		transition: all 0.5s;
 		border: var(--border);
 		border-radius: var(--br);
 		padding: 0.3em 0.6em;
+
+		&:hover {
+			cursor: pointer;
+			box-shadow: 0 0 0.3em 0.3em var(--selection-bg);
+		}
 	}
 
 	.selected {

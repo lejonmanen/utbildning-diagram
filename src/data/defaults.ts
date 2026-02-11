@@ -12,17 +12,17 @@ const defaultColors = [
   "#8B0707", "#329262", "#5574A6", "#651067"
 ];
 export function getColor(num: string | number): string {
-	try {
-		return defaultColors[Number(num) % defaultColors.length]
-	}
-	catch {
-		return defaultColors[0]
-	}
+	if( typeof num === 'string' && num.startsWith('#') ) return num
+
+	let n = Number(num)
+	// console.log('getColor ', num, n)
+	if( isNaN(n) ) return defaultColors[0]
+	return defaultColors[n % defaultColors.length]
 }
 
 
 export const defaultEdu: Education = {
-	name: 'FU26 | Frontendutvecklare',
+	name: 'FED25 | Frontendutvecklare',
 	courses: [
 		{ id: 1, color: 5, name: 'HTML och CSS', shortName: 'HTML+CSS', weeks: 8 },
 		{ id: 2, color: 2, name: 'JavaScript grund', shortName: 'JS grund', weeks: 9 },
@@ -34,6 +34,14 @@ export const defaultEdu: Education = {
 		{ id: 8, color: 1, name: 'LIA 1', shortName: 'LIA 1', weeks: 12 },
 		{ id: 9, color: 6, name: 'Examensarbete', shortName: 'Exarb', weeks: 4 },
 		{ id: 10,color: 1, name: 'LIA 2', shortName: 'LIA 2', weeks: 12 },
-	].map(c => ({ ...c, color: defaultColors[c.color] }))
+	].map(c => ({ ...c, color: c.color }))
+}
+
+export const emptyEdu: Education = {
+	name: 'Klass | utbildningsnamn',
+	courses: [
+		{ id: 1, color: 1, name: 'Kurs 1', shortName: 'Kurs1', weeks: 5 },
+		{ id: 2, color: 2, name: 'Kurs 2', shortName: 'Kurs2', weeks: 3 },
+	]
 }
 

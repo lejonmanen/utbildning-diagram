@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Education } from './types'
-import { defaultEdu } from './defaults';
+import { emptyEdu } from './defaults';
 
 interface State {
 	data: Education;
@@ -9,17 +9,22 @@ interface State {
 }
 
 
-
+const storageKey = 'edu-diagram'
 
 const useStore = create<State>()(
 	persist(
 		set => ({
-			data: defaultEdu,
+			data: { ...emptyEdu },
 			setData: d => set((/*state*/) => ({ data: d }))
 		}),
 		{
-			name: 'edu-diagram'
+			name: storageKey
 		}
 	)
 )
-export { useStore }
+
+function clearStorage() {
+	localStorage.removeItem(storageKey)
+}
+
+export { useStore, clearStorage }

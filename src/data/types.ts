@@ -8,13 +8,13 @@ export interface Course {
 	name: string;
 	shortName: string;
 	weeks: number;
-	color: string;
+	color: number;
 }
 export type Diff = {
 	name?: string;
 	shortName?: string;
 	weeks?: number;
-	color?: string;
+	color?: number;
 }
 
 // interface WithId {

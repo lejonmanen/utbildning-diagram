@@ -1,7 +1,6 @@
-// import { useState } from "react";
-import type { Course, Diff } from "../data/types";
-import { useStore } from "../data/store"
-import { getColor } from "../data/defaults";
+import { clearStorage, useStore } from "../data/store"
+import { defaultEdu } from "../data/defaults";
+import { newCourse, newList, shortifyName } from "../data/utils";
 
 
 
@@ -10,6 +9,10 @@ const AddData = () => {
 	const setData = useStore(state => state.setData)
 	// const [data, setData] = useState<Education>(defaultEdu)
 	const dc = data.courses
+
+	const fillDefaultData = () => {
+		setData({ ...defaultEdu })
+	}
 
 	return (
 		<div className="form-add-data">
@@ -25,55 +28,57 @@ const AddData = () => {
 			{data.courses.map(c => (
 				<div className="course" key={c.id}>
 					<h3> {c.name} [{c.shortName}] </h3>
-					<label> Kursnamn </label>
-					<input type="text"
-						onChange={e => setData({ ...data, courses: newList(dc, c.id, { name: e.target.value }) })}
-						value={c.name}
-						/>
+					<div className="fields row">
+						<div className="column margin-bot-md">
+							<label> Kursnamn </label>
+							<input type="text"
+								onChange={e => setData({ ...data, courses: newList(dc, c.id, { name: e.target.value, shortName: shortifyName(e.target.value) }) })}
+								value={c.name}
+								/>
+						</div>
 
-					{/* <div className="row"> */}
-						<label> Veckor </label>
-						<input type="number"
-							onChange={e => setData({ ...data, courses: newList(dc, c.id, { weeks: Number(e.target.value) }) })}
-							value={c.weeks}
-							/>
-
-						<label> Kategori (siffra) </label>
-						<input type="text" className="short"
-							onChange={e => setData({ ...data, courses: newList(dc, c.id, { color: getColor(e.target.value) }) })}
-							value={c.color}
-							/>
-					{/* </div> */}
+						<div className="column">
+							<label> Veckor </label>
+							<input type="number"
+								onChange={e => setData({ ...data, courses: newList(dc, c.id, { weeks: Number(e.target.value) }) })}
+								value={c.weeks}
+								/>
+						</div>
+						<div className="column">
+							<label title="Det finns 20 olika färger inlagda. Skriv 0 för att välja första färgen till den här kursen."> Färgkategori </label>
+							<input type="number" className="short"
+								onChange={e => setData({ ...data, courses: newList(dc, c.id, { color: Number(e.target.value) }) })}
+								value={c.color}
+								/>
+						</div>
+					</div>
 
 					<button onClick={() => setData({ ...data, courses: data.courses.filter(c2 => c2.id !== c.id)})}> Ta bort </button>
 				</div>
 			))}
-			<button
-				onClick={() => setData({ ...data, courses: [ ...data.courses, newCourse(data.courses) ] })}
-			> Lägg till kurs </button>
+			<div className="row">
+				<button
+					className="large"
+					onClick={() => setData({ ...data, courses: [ ...data.courses, newCourse(data.courses) ] })}
+				> Lägg till kurs </button>
 
-			{/* <button> Generera diagram </button> */}
+				<button
+					className="large"
+					onClick={clearStorage}
+				> Rensa localStorage
+				</button>
+				<button
+					className="large"
+					onClick={fillDefaultData}
+				> Ersätt med exempeldata
+				</button>
+
+			</div>
+
 		</div>
 	)
 }
 
-function newCourse(courses: Course[]): Course {
-	return {
-		id: courses.reduce((acc, cur) => Math.max(acc, cur.id), 0) + 1,
-		name: '',
-		shortName: '',
-		weeks: 2,
-		color: getColor(0)
-	}
-}
 
-function newList(list: Course[], id: number, diff: Diff): Course[] {
-	return list.map(x => {
-		if( x.id === id ) {
-			return { ...x, ...diff }
-		}
-		else return x
-	})
-}
 
 export default AddData
